@@ -5,11 +5,10 @@ import meteordevelopment.meteorclient.systems.modules.Modules;
 import com.MonboSoNasty.meteorchatgptx.modules.ChatGPTResponder;
 
 public class Addon {
-    // Category for ChatGPT modules in Meteor GUI
-    public static final Category CHATGPT_CATEGORY = new Category("ChatGPT", "ChatGPT Modules");
+    // Just pass the category name
+    public static final Category CHATGPT_CATEGORY = new Category("ChatGPT");
 
     public static void onInitialize() {
-        // Register the ChatGPTResponder module
         Modules.get().add(new ChatGPTResponder());
         System.out.println("[ChatGPTResponder] Module registered successfully!");
     }
