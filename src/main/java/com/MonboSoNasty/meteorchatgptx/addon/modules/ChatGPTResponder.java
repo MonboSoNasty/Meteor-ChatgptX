@@ -1,5 +1,6 @@
-package com.monbosonasty.meteorchatgptx.modules;
+package com.MonboSoNasty.meteorchatgptx.addon.modules;
 
+import com.MonboSoNasty.meteorchatgptx.addon.Addon;
 import meteordevelopment.meteorclient.events.game.ReceiveMessageEvent;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
@@ -15,7 +16,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import com.monbosonasty.meteorchatgptx.Addon;
+
+import com.MonboSoNasty.meteorchatgptx.Addon;
 
 public class ChatGPTResponder extends Module {
     private final MinecraftClient mc = MinecraftClient.getInstance();
