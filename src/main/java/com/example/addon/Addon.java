@@ -1,16 +1,16 @@
 package com.monbosonasty.meteorchatgptx;
 
+import meteordevelopment.meteorclient.systems.modules.Category;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import com.monbosonasty.meteorchatgptx.modules.ChatGPTResponder;
 
 public class Addon {
+    // Category for ChatGPT modules
+    public static final Category CHATGPT_CATEGORY = new Category("ChatGPT", "ChatGPT Modules");
 
-    // Called when the addon initializes
     public static void onInitialize() {
-        // Register the ChatGPTResponder module
+        // Register ChatGPTResponder
         Modules.get().add(new ChatGPTResponder());
-
-        // Debug message to confirm registration
         System.out.println("[ChatGPTResponder] Module registered successfully!");
     }
 }
