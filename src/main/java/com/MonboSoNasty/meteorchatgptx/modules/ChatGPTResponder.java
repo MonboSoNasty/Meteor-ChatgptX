@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class ChatGPTResponder extends Module {
+
     private final MinecraftClient mc = MinecraftClient.getInstance();
     private final HttpClient httpClient = HttpClient.newHttpClient();
 
@@ -24,14 +25,14 @@ public class ChatGPTResponder extends Module {
 
     private final Setting<Boolean> enabled = sgGeneral.add(new BoolSetting.Builder()
         .name("enabled")
-        .description("Enable/disable the ChatGPT responder.")
+        .description("Enable/disable ChatGPT responder.")
         .defaultValue(true)
         .build()
     );
 
     private final Setting<String> keywords = sgGeneral.add(new StringSetting.Builder()
         .name("trigger-words")
-        .description("Comma-separated keywords to look for in chat messages.")
+        .description("Comma-separated keywords to respond to in chat.")
         .defaultValue("unscramble,math,solve")
         .build()
     );
@@ -45,15 +46,19 @@ public class ChatGPTResponder extends Module {
 
     private final Setting<Boolean> previewOnly = sgGeneral.add(new BoolSetting.Builder()
         .name("preview-only")
-        .description("Show the answer in client chat instead of sending automatically.")
+        .description("Show answer in chat instead of sending automatically.")
         .defaultValue(false)
         .build()
     );
 
-    private String lastAnswer = null;
+    private static String lastAnswer = null;
 
     public ChatGPTResponder() {
         super(Addon.CHATGPT_CATEGORY, "chatgpt-responder", "Automatically answers chat games using ChatGPT.");
+    }
+
+    public static String getLastAnswer() {
+        return lastAnswer;
     }
 
     @EventHandler
