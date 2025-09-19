@@ -3,8 +3,6 @@ package com.monbosonasty.meteorchatgptx.modules;
 import meteordevelopment.meteorclient.events.game.ReceiveMessageEvent;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
-import meteordevelopment.meteorclient.systems.modules.Modules;
-import meteordevelopment.meteorclient.systems.modules.keybinds.*;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
@@ -17,11 +15,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+import com.monbosonasty.meteorchatgptx.Addon;
+
 public class ChatGPTResponder extends Module {
     private final MinecraftClient mc = MinecraftClient.getInstance();
     private final HttpClient httpClient = HttpClient.newHttpClient();
 
-    // --- Settings ---
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
 
     private final Setting<Boolean> enabled = sgGeneral.add(new BoolSetting.Builder()
@@ -52,18 +51,10 @@ public class ChatGPTResponder extends Module {
         .build()
     );
 
-    private final Setting<Keybind> sendKey = sgGeneral.add(new KeybindSetting.Builder()
-        .name("send-key")
-        .description("Keybind to send the last previewed answer. Leave blank for none.")
-        .defaultValue(Keybind.none())
-        .build()
-    );
-
-    // --- State ---
     private String lastAnswer = null;
 
     public ChatGPTResponder() {
-        super(Modules.get(), "chatgpt-responder", "Automatically answers chat games using ChatGPT.");
+        super(Addon.CHATGPT_CATEGORY, "chatgpt-responder", "Automatically answers chat games using ChatGPT.");
     }
 
     @EventHandler
@@ -93,22 +84,11 @@ public class ChatGPTResponder extends Module {
         }
     }
 
-    @Override
-    public void onTick() {
-        if (sendKey.get().isPressed() && lastAnswer != null && mc.player != null) {
-            mc.player.networkHandler.sendChatMessage(lastAnswer);
-            lastAnswer = null; // clear after sending
-        }
-    }
-
     private CompletableFuture<String> askChatGPT(String prompt) {
         return CompletableFuture.supplyAsync(() -> {
             try {
                 String apiKey = System.getenv("OPENAI_API_KEY");
-                if (apiKey == null) {
-                    System.out.println("[ChatGPTResponder] Missing OPENAI_API_KEY env variable!");
-                    return null;
-                }
+                if (apiKey == null) return null;
 
                 String body = "{ \"model\": \"gpt-4o-mini\", \"messages\": [ { \"role\": \"user\", \"content\": \"" + prompt.replace("\"", "\\\"") + "\" } ] }";
 
