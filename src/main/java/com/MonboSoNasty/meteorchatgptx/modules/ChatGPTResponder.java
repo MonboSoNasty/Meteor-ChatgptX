@@ -1,6 +1,6 @@
-package com.MonboSoNasty.meteorchatgptx.addon.modules;
+package com.MonboSoNasty.meteorchatgptx.modules;
 
-import com.MonboSoNasty.meteorchatgptx.addon.Addon;
+import com.MonboSoNasty.meteorchatgptx.Addon;
 import meteordevelopment.meteorclient.events.game.ReceiveMessageEvent;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
@@ -15,9 +15,6 @@ import java.net.http.HttpResponse;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-
-
-import com.MonboSoNasty.meteorchatgptx.Addon;
 
 public class ChatGPTResponder extends Module {
     private final MinecraftClient mc = MinecraftClient.getInstance();
@@ -92,7 +89,8 @@ public class ChatGPTResponder extends Module {
                 String apiKey = System.getenv("OPENAI_API_KEY");
                 if (apiKey == null) return null;
 
-                String body = "{ \"model\": \"gpt-4o-mini\", \"messages\": [ { \"role\": \"user\", \"content\": \"" + prompt.replace("\"", "\\\"") + "\" } ] }";
+                String body = "{ \"model\": \"gpt-4o-mini\", \"messages\": [ { \"role\": \"user\", \"content\": \"" 
+                    + prompt.replace("\"", "\\\"") + "\" } ] }";
 
                 HttpRequest request = HttpRequest.newBuilder()
                         .uri(URI.create("https://api.openai.com/v1/chat/completions"))
